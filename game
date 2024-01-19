@@ -1,0 +1,59 @@
+import pygame
+import sys
+
+# 初始化pygame环境
+pygame.init()
+
+# 设置窗口大小å
+screen = pygame.display.set_mode((1020, 1020))
+
+# 加载飞机图片
+player = pygame.image.load('player.png')
+
+# 设置飞机的初始位置
+position = [200, 600]
+
+# 加载敌机图片
+enemy = pygame.image.load('enemy.png')
+
+# 设置敌机的初始位置
+enemy_position = [500, 0]
+
+while True:
+    # 检查事件
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+    # 获取键盘事件
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP]:
+        position[1] -= 5
+    if keys[pygame.K_DOWN]:
+        position[1] += 5
+    if keys[pygame.K_LEFT]:
+        position[0] -= 5
+    if keys[pygame.K_RIGHT]:
+        position[0] += 5
+
+    # 更新敌机位置
+    enemy_position[1] += 5
+    if enemy_position[1] > 600:
+        enemy_position[1] = 0
+
+    # 检查碰撞
+    if abs(position[0] - enemy_position[0]) < 50 and abs(position[1] - enemy_position[1]) < 50:
+        print("Game Over")
+        pygame.quit()
+        sys.exit()
+
+    # 清屏
+    screen.fill((255, 255, 255))
+
+    # 绘制飞机和敌机
+    screen.blit(player, position)
+    screen.blit(enemy, enemy_position)
+
+    # 更新屏幕
+    pygame.display.update()
